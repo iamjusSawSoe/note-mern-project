@@ -1,12 +1,15 @@
-import express from "express";
+import app from "./app";
+import env from "./util/validateEnv";
+import mongoose from "mongoose";
 
-const app = express();
-const port = 5000;
+const port = env.PORT;
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
-
-app.listen(port!, () => {
-  console.log(`starting the server at ` + port);
-});
+mongoose
+  .connect(env.MONGO_CONNECTION_STRING)
+  .then(() => {
+    console.log("Mongoose connected successfully");
+    app.listen(port!, () => {
+      console.log(`starting the server at ` + port);
+    });
+  })
+  .catch(console.error);
